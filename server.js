@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 8000;
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"],
   }),
 );
 app.use(express.json());
@@ -170,25 +170,10 @@ async function run() {
         if (liveUrl !== undefined) updateFields.liveUrl = liveUrl;
         if (githubUrl !== undefined) updateFields.githubUrl = githubUrl;
         if (imageUrl !== undefined) updateFields.imageUrl = imageUrl;
-
-        if (technologies !== undefined) {
-          updateFields.technologies = technologies
-            .split(",")
-            .map((t) => t.trim())
-            .filter(Boolean);
-        }
-        if (features !== undefined) {
-          updateFields.features = features
-            .split(",")
-            .map((f) => f.trim())
-            .filter(Boolean);
-        }
-        if (challenges !== undefined) {
-          updateFields.challenges = challenges
-            .split(",")
-            .map((c) => c.trim())
-            .filter(Boolean);
-        }
+        if (technologies !== undefined)
+          updateFields.technologies = technologies;
+        if (features !== undefined) updateFields.features = features; 
+        if (challenges !== undefined) updateFields.challenges = challenges;
 
         if (Object.keys(updateFields).length === 0) {
           return res
